@@ -1,4 +1,5 @@
 from typing import Sequence
+
 from src.application.common.gateway import TaskGateway
 from src.application.exceptions.task import TaskNotFoundError
 from src.domain.entities.task import Task
@@ -23,7 +24,7 @@ class TaskService:
             name=name,
             description=description,
             state=TaskState.PENDING,
-            user_id=user_id
+            user_id=user_id,
         )
         new_task_id = await self._gateway.save_task(new_task)
         await self._gateway.commit()

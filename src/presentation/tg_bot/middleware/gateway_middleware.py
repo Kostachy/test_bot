@@ -10,5 +10,5 @@ class GatewayMiddleware(OnUpdateMiddleware):
 
     async def __call__(self, update, client, patch_helper: PatchHelper):
         sqlalchemy_session: AsyncSession = patch_helper.data["sqlalchemy_session"]
-        patch_helper.data['user_gateway'] = SqlUserGateway(sqlalchemy_session)
-        patch_helper.data['task_gateway'] = SqlTaskGateway(sqlalchemy_session)
+        patch_helper.data["user_gateway"] = SqlUserGateway(sqlalchemy_session)
+        patch_helper.data["task_gateway"] = SqlTaskGateway(sqlalchemy_session)

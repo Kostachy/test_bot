@@ -1,8 +1,8 @@
 from typing import Sequence
 
-from sqlalchemy.exc import IntegrityError, DBAPIError
+from sqlalchemy import delete, select
+from sqlalchemy.exc import DBAPIError, IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, delete
 
 from src.application.common.gateway import TaskGateway
 from src.application.exceptions.task import TaskAlreadyExistsError
@@ -16,10 +16,7 @@ class SqlTaskGateway(TaskGateway):
         self.session = session
 
     async def get_tasks_by_id(self, task_id: int) -> Task | None:
-        query = (
-            select(models.Task)
-            .where(models.Task.id == task_id)
-        )
+        query = select(models.Task).where(models.Task.id == task_id)
         result = await self.session.execute(query)
         tasks_from_db = result.scalar_one_or_none()
         if not tasks_from_db:
@@ -29,14 +26,15 @@ class SqlTaskGateway(TaskGateway):
             name=tasks_from_db.name,
             description=tasks_from_db.description,
             state=tasks_from_db.state,
-            user_id=tasks_from_db.user_id
+            user_id=tasks_from_db.user_id,
         )
 
     async def get_all_tasks_by_user_id(self, user_id: int) -> Sequence[Task]:
-        query = (select(models.Task)
-                 .where(models.Task.user_id == user_id)
-                 .order_by(models.Task.created_at)
-                 )
+        query = (
+            select(models.Task)
+            .where(models.Task.user_id == user_id)
+            .order_by(models.Task.created_at)
+        )
         result = await self.session.execute(query)
         tasks_from_db = result.scalars().unique().all()
         if not tasks_from_db:
@@ -47,8 +45,9 @@ class SqlTaskGateway(TaskGateway):
                 name=task.name,
                 description=task.description,
                 state=task.state,
-                user_id=task.user_id
-            ) for task in tasks_from_db
+                user_id=task.user_id,
+            )
+            for task in tasks_from_db
         ]
 
     async def save_task(self, task: Task) -> int:
@@ -56,7 +55,7 @@ class SqlTaskGateway(TaskGateway):
             name=task.name,
             description=task.description,
             state=task.state,
-            user_id=task.user_id
+            user_id=task.user_id,
         )
         self.session.add(task_to_save)
         try:

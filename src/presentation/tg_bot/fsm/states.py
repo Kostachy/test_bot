@@ -1,4 +1,4 @@
-from pyrogram_patch.fsm import StatesGroup, StateItem
+from pyrogram_patch.fsm import StateItem, StatesGroup
 
 
 class RegistrationState(StatesGroup):

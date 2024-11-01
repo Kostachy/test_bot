@@ -5,5 +5,5 @@ default_keyboard = ReplyKeyboardMarkup(
         ["Мои задачи"],
         ["Создать новую задачу"],
     ],
-    resize_keyboard=True
+    resize_keyboard=True,
 )

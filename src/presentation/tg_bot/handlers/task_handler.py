@@ -1,5 +1,5 @@
-from pyrogram import filters, Client
-from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
+from pyrogram import Client, filters
+from pyrogram.types import CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup
 from pyrogram_patch.fsm import State
 from pyrogram_patch.fsm.filter import StateFilter
 from pyrogram_patch.router import Router
@@ -15,7 +15,9 @@ task_router = Router()
 @task_router.on_message(filters.text & StateFilter(ActionTaskState.chose_task))
 async def add_new_task_handler(bot, message, state: State, task_gateway: TaskGateway):
     if message.text == "Создать новую задачу":
-        await bot.send_message(message.chat.id, "Введите название задачи, которую хотите записать")
+        await bot.send_message(
+            message.chat.id, "Введите название задачи, которую хотите записать"
+        )
         await state.set_state(ActionTaskState.add_task)
     elif message.text == "Мои задачи":
         task_service = TaskService(gateway=task_gateway)
@@ -31,13 +33,26 @@ async def add_new_task_handler(bot, message, state: State, task_gateway: TaskGat
                     flag = "⏳"
                 elif task.state == TaskState.DONE:
                     flag = "✅"
-                wrap_lst.append(InlineKeyboardButton(f"{task.name} {flag}", callback_data=str(task.id)))
+                wrap_lst.append(
+                    InlineKeyboardButton(
+                        f"{task.name} {flag}", callback_data=str(task.id)
+                    )
+                )
                 inline_list.append(wrap_lst)
-            await bot.send_message(message.chat.id, "Ваши задачи:", reply_markup=InlineKeyboardMarkup(inline_list))
+            await bot.send_message(
+                message.chat.id,
+                "Ваши задачи:",
+                reply_markup=InlineKeyboardMarkup(inline_list),
+            )
 
 
 @task_router.on_callback_query(StateFilter(ActionTaskState.chose_task))
-async def choose_task(client: Client, callback_query: CallbackQuery, state: State, task_gateway: TaskGateway):
+async def choose_task(
+    client: Client,
+    callback_query: CallbackQuery,
+    state: State,
+    task_gateway: TaskGateway,
+):
     task = await task_gateway.get_tasks_by_id(int(callback_query.data))
     flag = None
     if task.state == TaskState.PENDING:
@@ -48,18 +63,31 @@ async def choose_task(client: Client, callback_query: CallbackQuery, state: Stat
         f"{task.name} {flag}\n\nОписание:\n{task.description}\n\nВыберите действие над задачей",
         reply_markup=InlineKeyboardMarkup(
             [
-                [InlineKeyboardButton("Удалить задачу", callback_data="Удалить задачу")],
-                [InlineKeyboardButton("Пометить задачу как выполненную",
-                                      callback_data="Пометить задачу как выполненную")],
+                [
+                    InlineKeyboardButton(
+                        "Удалить задачу", callback_data="Удалить задачу"
+                    )
+                ],
+                [
+                    InlineKeyboardButton(
+                        "Пометить задачу как выполненную",
+                        callback_data="Пометить задачу как выполненную",
+                    )
+                ],
             ]
-        )
+        ),
     )
     await state.set_data({"task_id": task.id})
     await state.set_state(ActionTaskState.delete_or_change_task)
 
 
 @task_router.on_callback_query(StateFilter(ActionTaskState.delete_or_change_task))
-async def handle_task(client: Client, callback_query: CallbackQuery, state: State, task_gateway: TaskGateway):
+async def handle_task(
+    client: Client,
+    callback_query: CallbackQuery,
+    state: State,
+    task_gateway: TaskGateway,
+):
     data = await state.get_data()
     task_id = data["task_id"]
     task_service = TaskService(task_gateway)
@@ -83,13 +111,15 @@ async def add_name_to_new_task_handler(bot, message, state: State):
 
 
 @task_router.on_message(filters.text & StateFilter(ActionTaskState.set_desc_to_task))
-async def add_description_to_new_task_handler(bot, message, state: State, task_gateway: TaskGateway):
+async def add_description_to_new_task_handler(
+    bot, message, state: State, task_gateway: TaskGateway
+):
     task_service = TaskService(gateway=task_gateway)
     data_for_new_task = await state.get_data()
     await task_service.add_new_task(
         name=data_for_new_task["task_name"],
         description=message.text,
-        user_id=message.from_user.id
+        user_id=message.from_user.id,
     )
     await bot.send_message(message.chat.id, "Отлично! Задача успешно записана")
     await state.set_state(ActionTaskState.chose_task)

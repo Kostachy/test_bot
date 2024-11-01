@@ -30,5 +30,5 @@ def load_config(path: str | None = None) -> Config:
             api_hash=env("TG_BOT_API_HASH"),
             api_id=env("TG_BOT_API_ID"),
         ),
-        database=DatabaseConfig(database_url=env("DATABASE_URL"))
+        database=DatabaseConfig(database_url=env("DATABASE_URL")),
     )

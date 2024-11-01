@@ -13,12 +13,14 @@ from src.presentation.tg_bot.middleware.session_middleware import SessionMiddlew
 
 
 def main() -> Client:
-    logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    )
 
     settings = load_config()
     engine = create_engine(database_url=settings.database.database_url)
     session_maker = create_session_maker(engine)
-
 
     app = Client(
         name="Test_tg_bot",

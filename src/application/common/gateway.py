@@ -1,5 +1,5 @@
-from typing import Protocol, Sequence
 from abc import abstractmethod
+from typing import Protocol, Sequence
 
 from src.domain.entities.task import Task
 from src.domain.entities.user import User

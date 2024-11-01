@@ -23,17 +23,14 @@ class UserService:
             return True
         return False
 
-    async def register_new_user(self, user_id: int, name: str, login: str) -> User | None:
+    async def register_new_user(
+        self, user_id: int, name: str, login: str
+    ) -> User | None:
         checked_user = await self._gateway.get_user_by_id(user_id)
         if checked_user is None:
             username = UserName(name)
             user_login = UserLogin(login)
-            user = User(
-                id=user_id,
-                name=username,
-                login=user_login,
-                created_at=None
-            )
+            user = User(id=user_id, name=username, login=user_login, created_at=None)
             await self._gateway.save_user(user)
             await self._gateway.commit()
             return user

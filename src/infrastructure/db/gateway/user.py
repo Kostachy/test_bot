@@ -1,9 +1,12 @@
-from sqlalchemy.exc import IntegrityError, DBAPIError
-from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
+from sqlalchemy.exc import DBAPIError, IntegrityError
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.application.common.gateway import UserGateway
-from src.application.exceptions.user import UserAlreadyExistsError, UserLoginNotUniqueError
+from src.application.exceptions.user import (
+    UserAlreadyExistsError,
+    UserLoginNotUniqueError,
+)
 from src.domain.entities.user import User
 from src.domain.value_objects.login import UserLogin
 from src.domain.value_objects.username import UserName
