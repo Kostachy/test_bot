@@ -16,4 +16,4 @@ class InvalidUserNameError(DomainError):
 class InvalidUserLoginError(DomainError):
     @property
     def description(self) -> str:
-        return "Логин не действителен"
+        return "Логин должен состоять минимум из 6 символов и минимум одной цифры. Минимум один символ должен быть в верхнем регистре и один в нижнем!"

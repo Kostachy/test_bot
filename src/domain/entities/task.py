@@ -1,10 +1,15 @@
 from dataclasses import dataclass
-from datetime import datetime
+
+from src.domain.value_objects.task_state import TaskState
 
 
 @dataclass
 class Task:
-    id: int
+    id: int | None
     name: str
     description: str
-    deadline: datetime
+    state: TaskState
+    user_id: int
+
+    def change_to_done(self) -> None:
+        self.state = TaskState.DONE
