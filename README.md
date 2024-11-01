@@ -34,3 +34,7 @@ Infrastructure layer:
 
 Presentation laier:
  - Представляет собой слой представления. Этот слой может быть чем угодно (тг бот, API, голый html и т.д.)
+
+
+### Диаграмма компонентов и взаимодействий.
+[UML Class diagram](assets/UML%20Class%20diagram%20by%20Dmitry%20Ermakov.pdf)
