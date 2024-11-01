@@ -6,6 +6,8 @@ from src.domain.value_objects.username import UserName
 
 
 class UserService:
+    """Класс содержащий бизнес логику для работы с Пользователем"""
+
     def __init__(self, gateway: UserGateway):
         self._gateway = gateway
 

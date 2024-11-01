@@ -7,12 +7,19 @@ from src.domain.exceptions.user import InvalidUserNameError
 
 @dataclass(frozen=True)
 class UserName(ValueObject[str]):
+    """Объект-значение для валидации имени пользователя"""
+
     value: str
 
     MAX_LENGTH = 60
     MIN_LENGTH = 3
 
     def _validate(self) -> None:
+        """
+        Метода проверяет, что имен больше 3 и меньше 60 символов,
+        а также не содержит числа и не является пустым.
+        """
+
         if len(self.value) > self.MAX_LENGTH:
             raise InvalidUserNameError("Имя пользователя слишком длинная!")
         if len(self.value) < self.MIN_LENGTH:

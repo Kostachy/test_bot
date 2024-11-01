@@ -6,6 +6,7 @@ from src.domain.entities.user import User
 
 
 class UserGateway(Protocol):
+    """Интерфейс для слоя доступа к сущности Пользователь"""
 
     @abstractmethod
     async def get_user_by_id(self, id_: int) -> User | None:
@@ -21,6 +22,7 @@ class UserGateway(Protocol):
 
 
 class TaskGateway(Protocol):
+    """Интерфейс для слоя доступа к сущности Задача"""
 
     @abstractmethod
     async def get_all_tasks_by_user_id(self, user_id: int) -> Sequence[Task] | None:

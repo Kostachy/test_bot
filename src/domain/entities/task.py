@@ -5,6 +5,7 @@ from src.domain.value_objects.task_state import TaskState
 
 @dataclass
 class Task:
+    """Сущность Задача. Представляет собой анемичную модель из DDD"""
     id: int | None
     name: str
     description: str

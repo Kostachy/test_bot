@@ -7,6 +7,8 @@ from src.domain.value_objects.task_state import TaskState
 
 
 class TaskService:
+    """Класс содержащий бизнес логику для работы с Задачами"""
+
     def __init__(self, gateway: TaskGateway):
         self._gateway = gateway
 
