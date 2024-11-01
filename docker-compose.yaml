@@ -1,6 +1,5 @@
 services:
   tg_bot:
-    profiles: [ "tg_bot" ]
     image: bot_image
     container_name: app.tg_bot
     hostname: app.tg_bot
@@ -36,17 +35,17 @@ services:
     networks:
       - app_tg_bot_network
 
-  pg_admin:
-    image: dpage/pgadmin4
-    container_name: app.pg_admin
-    hostname: app.pg_admin
-    ports:
-      - "8000:80"
-    environment:
-      - PGADMIN_DEFAULT_EMAIL=user@domain.com
-      - PGADMIN_DEFAULT_PASSWORD=SuperSecret
-    networks:
-      - app_tg_bot_network
+#  pg_admin:
+#    image: dpage/pgadmin4
+#    container_name: app.pg_admin
+#    hostname: app.pg_admin
+#    ports:
+#      - "8000:80"
+#    environment:
+#      - PGADMIN_DEFAULT_EMAIL=user@domain.com
+#      - PGADMIN_DEFAULT_PASSWORD=SuperSecret
+#    networks:
+#      - app_tg_bot_network
 
 volumes:
   app_pg_data: { }
